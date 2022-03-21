@@ -7,3 +7,5 @@
 *.json
 *.nix
 .gitattributes
+.idea
+.DS_Store
