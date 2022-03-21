@@ -1,0 +1,4 @@
+python-dotenv==0.9.1
+requests==2.27.1
+argparse=1.1
+dotenv=16.0.0
