@@ -59,13 +59,13 @@ def main():
         try:
             clicks_count = count_clicks(BITLINK_TOKEN, line_args.url)
         except requests.exceptions.HTTPError as error:
-            exit("Посчитать количество кликов не получилось".format(error))
+            exit("Не удалось получить количество кликов, проверьте токен".format(error))
         print(f"Количество кликов: {clicks_count}")
     else:
         try:
             bitlink = shorten_link(BITLINK_TOKEN, line_args.url)
         except requests.exceptions.HTTPError as error:
-            exit("Ну что ты пихаешь, нужна нормальная ссылка".format(error))
+            exit("Вы ввели неправильную ссылку, или ошибка в токене".format(error))
         print(f"Битлинк {bitlink}")
 
 
