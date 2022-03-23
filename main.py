@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 
 
 BITLINK_TOKEN = os.getenv("BITLINK_ACCESS_TOKEN")
-BIT_URL = "https://api-ssl.bitly.com/v4"
+API_URL = "https://api-ssl.bitly.com/v4"
 
 
 def create_parser():
@@ -18,7 +18,7 @@ def create_parser():
 
 def base_bitlink_link(url: str) -> str:
     url_parts = urlparse(url)
-    return f"{BIT_URL}/bitlinks/{url_parts.netloc}{url_parts.path}"
+    return f"{}/bitlinks/{url_parts.netloc}{url_parts.path}"
 
 
 def is_bitlink(token: str, url: str) -> bool:
@@ -35,7 +35,7 @@ def shorten_link(token: str, url: str) -> str:
     payload = {
         "long_url": url,
         }
-    response = requests.post(f'{BIT_URL}/shorten', headers=headers, json=payload)
+    response = requests.post(f'{API_URL}/shorten', headers=headers, json=payload)
     response.raise_for_status()
     return response.json()["link"]
 
