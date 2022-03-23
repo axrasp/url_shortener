@@ -18,7 +18,7 @@ Python3 должен быть уже установлен. Затем испол
 pip install -r requirements.txt
 ```
 Не забудьте создать необходимый файл settings.py для правильной работы dotenv, документация по ссылке:
-https://www.npmjs.com/package/dotenv
+https://pypi.org/project/python-dotenv/
 
 **Получите токен для работы API:**
 
@@ -63,4 +63,3 @@ $ python3 main.py http://ya.ru
 **Лицензия**
 
 Код распространяется свободно согласно MIT License
-
