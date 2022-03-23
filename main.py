@@ -12,13 +12,13 @@ API_URL = "https://api-ssl.bitly.com/v4"
 
 def create_parser():
     parser = argparse.ArgumentParser()
-    parser.add_argument ('url')
+    parser.add_argument('url')
     return parser
 
 
 def api_request_url(url: str) -> str:
     url_parts = urlparse(url)
-    return f"{}/bitlinks/{url_parts.netloc}{url_parts.path}"
+    return f"{API_URL}/bitlinks/{url_parts.netloc}{url_parts.path}"
 
 
 def is_bitlink(token: str, url: str) -> bool:
@@ -29,9 +29,6 @@ def is_bitlink(token: str, url: str) -> bool:
 
 def shorten_link(token: str, url: str) -> str:
     headers = {"Authorization": f"Bearer {token}"}
-    # Making possible to use short url_shorter like "ya.ru"
-    url_parsed = urlparse(url)
-    url = f"http://{url_parsed.netloc}{url_parsed.path}"
     payload = {
         "long_url": url,
         }
@@ -52,22 +49,31 @@ def count_clicks(token: str, url: str) -> str:
 
 
 def main():
-    load_dotenv()
     parser = create_parser()
     line_args = parser.parse_args()
-    if is_bitlink(BITLINK_TOKEN, line_args.url):
+    try:
+        # Making possible to use short url like "ya.ru"
+        url_parsed = urlparse(line_args.url)
+        url = f"http://{url_parsed.netloc}{url_parsed.path}"
+        # Checking if url exist
+        check_url = requests.get(url)
+        check_url.raise_for_status()
+    except requests.exceptions.ConnectionError as error:
+        exit("Ссылка не валидна".format(error))
+    if is_bitlink(BITLINK_TOKEN, url):
         try:
-            clicks_count = count_clicks(BITLINK_TOKEN, line_args.url)
+            clicks_count = count_clicks(BITLINK_TOKEN, url)
         except requests.exceptions.HTTPError as error:
             exit("Не удалось получить количество кликов, проверьте токен".format(error))
         print(f"Количество кликов: {clicks_count}")
     else:
         try:
-            bitlink = shorten_link(BITLINK_TOKEN, line_args.url)
+            bitlink = shorten_link(BITLINK_TOKEN, url)
         except requests.exceptions.HTTPError as error:
             exit("Вы ввели неправильную ссылку, или ошибка в токене".format(error))
         print(f"Битлинк {bitlink}")
 
 
 if __name__ == "__main__":
+    load_dotenv()
     main()
