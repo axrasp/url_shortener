@@ -6,7 +6,6 @@ import requests
 from dotenv import load_dotenv
 
 
-BITLINK_TOKEN = os.getenv("BITLINK_ACCESS_TOKEN")
 API_URL = "https://api-ssl.bitly.com/v4"
 
 
@@ -49,6 +48,7 @@ def count_clicks(token: str, url: str) -> str:
 
 
 def main():
+    bitlink_token = os.getenv("BITLINK_ACCESS_TOKEN")
     parser = create_parser()
     line_args = parser.parse_args()
     try:
@@ -60,15 +60,15 @@ def main():
         check_url.raise_for_status()
     except requests.exceptions.ConnectionError as error:
         exit("Ссылка не валидна".format(error))
-    if is_bitlink(BITLINK_TOKEN, url):
+    if is_bitlink(bitlink_token, url):
         try:
-            clicks_count = count_clicks(BITLINK_TOKEN, url)
+            clicks_count = count_clicks(bitlink_token, url)
         except requests.exceptions.HTTPError as error:
             exit("Не удалось получить количество кликов, проверьте токен".format(error))
         print(f"Количество кликов: {clicks_count}")
     else:
         try:
-            bitlink = shorten_link(BITLINK_TOKEN, url)
+            bitlink = shorten_link(bitlink_token, url)
         except requests.exceptions.HTTPError as error:
             exit("Вы ввели неправильную ссылку, или ошибка в токене".format(error))
         print(f"Битлинк {bitlink}")
