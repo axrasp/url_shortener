@@ -16,14 +16,14 @@ def create_parser():
     return parser
 
 
-def base_bitlink_link(url: str) -> str:
+def api_request_url(url: str) -> str:
     url_parts = urlparse(url)
     return f"{}/bitlinks/{url_parts.netloc}{url_parts.path}"
 
 
 def is_bitlink(token: str, url: str) -> bool:
     headers = {"Authorization": f"Bearer {token}"}
-    response = requests.get(base_bitlink_link(url), headers=headers)
+    response = requests.get(api_request_url(url), headers=headers)
     return response.ok
 
 
@@ -45,7 +45,7 @@ def count_clicks(token: str, url: str) -> str:
     payload = {
         "units": "-1",
     }
-    response = requests.get(f"{base_bitlink_link(url)}/clicks/summary", headers=headers, params=payload)
+    response = requests.get(f"{api_request_url(url)}/clicks/summary", headers=headers, params=payload)
     response.raise_for_status()
     clicks_count = response.json()["total_clicks"]
     return clicks_count
