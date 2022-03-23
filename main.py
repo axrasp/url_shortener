@@ -10,7 +10,7 @@ BITLINK_TOKEN = os.getenv("BITLINK_ACCESS_TOKEN")
 BIT_URL = "https://api-ssl.bitly.com/v4"
 
 
-def createParser():
+def create_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument ('url')
     return parser
@@ -53,7 +53,7 @@ def count_clicks(token: str, url: str) -> str:
 
 def main():
     load_dotenv()
-    parser = createParser()
+    parser = create_parser()
     line_args = parser.parse_args()
     if is_bitlink(BITLINK_TOKEN, line_args.url):
         try:
