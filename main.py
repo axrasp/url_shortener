@@ -56,8 +56,8 @@ def main():
         url_parsed = urlparse(line_args.url)
         url = f"http://{url_parsed.netloc}{url_parsed.path}"
         # Checking if url exist
-        check_url = requests.get(url)
-        check_url.raise_for_status()
+        response_url_check = requests.get(url)
+        response_url_check.raise_for_status()
     except requests.exceptions.ConnectionError as error:
         exit("Ссылка не валидна".format(error))
     if is_bitlink(bitlink_token, url):
