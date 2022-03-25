@@ -30,7 +30,7 @@ def shorten_link(token: str, url: str) -> str:
     headers = {"Authorization": f"Bearer {token}"}
     payload = {
         "long_url": url,
-        }
+    }
     response = requests.post(f'{API_URL}/shorten', headers=headers, json=payload)
     response.raise_for_status()
     return response.json()["link"]
