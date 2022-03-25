@@ -26,10 +26,12 @@ def is_bitlink(token: str, url: str) -> bool:
     return response.ok
 
 
-def shorten_link(token: str, url: str) -> str:
+def shorten_link(token: str, url: str, group_id: str, custom_domain: str) -> str:
     headers = {"Authorization": f"Bearer {token}"}
     payload = {
         "long_url": url,
+        "group_guid": group_id,
+        "domain": custom_domain,
     }
     response = requests.post(f'{API_URL}/shorten', headers=headers, json=payload)
     response.raise_for_status()
@@ -49,6 +51,8 @@ def count_clicks(token: str, url: str) -> str:
 
 def main():
     bitlink_token = os.getenv("BITLINK_ACCESS_TOKEN")
+    custom_domain = os.getenv("CUSTOM_DOMAIN")
+    group_id = os.getenv("GROUP_ID")
     parser = create_parser()
     line_args = parser.parse_args()
     try:
@@ -68,7 +72,7 @@ def main():
         print(f"Количество кликов: {clicks_count}")
     else:
         try:
-            bitlink = shorten_link(bitlink_token, url)
+            bitlink = shorten_link(bitlink_token, url, group_id, custom_domain)
         except requests.exceptions.HTTPError:
             exit("Вы ввели неправильную ссылку, или ошибка в токене")
         print(f"Битлинк {bitlink}")
