@@ -58,19 +58,19 @@ def main():
         # Checking if url exist
         response_url_check = requests.get(url)
         response_url_check.raise_for_status()
-    except requests.exceptions.ConnectionError as error:
-        exit("Ссылка не валидна".format(error))
+    except requests.exceptions.ConnectionError:
+        exit("Ссылка не валидна")
     if is_bitlink(bitlink_token, url):
         try:
             clicks_count = count_clicks(bitlink_token, url)
-        except requests.exceptions.HTTPError as error:
-            exit("Не удалось получить количество кликов, проверьте токен".format(error))
+        except requests.exceptions.HTTPError:
+            exit("Не удалось получить количество кликов, проверьте токен")
         print(f"Количество кликов: {clicks_count}")
     else:
         try:
             bitlink = shorten_link(bitlink_token, url)
-        except requests.exceptions.HTTPError as error:
-            exit("Вы ввели неправильную ссылку, или ошибка в токене".format(error))
+        except requests.exceptions.HTTPError:
+            exit("Вы ввели неправильную ссылку, или ошибка в токене")
         print(f"Битлинк {bitlink}")
 
 
